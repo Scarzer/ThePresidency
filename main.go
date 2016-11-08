@@ -63,8 +63,19 @@ const (
 	ME
 )
 
+func main() {
+
+	fs := http.FileServer(http.Dir("example"))
+	http.Handle("/", fs)
+	http.HandleFunc("/color", setColor)
+
+	log.Println("Listening.....")
+	http.ListenAndServe(":3000", nil)
+}
+
 func setColor(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "Hello World!")
+	log.Println("Logging message: " + r.Body.Read())
 }
 
 func sendColor(color string) {
@@ -119,15 +130,4 @@ type Map struct {
 }
 
 func (*Map) SetStateColor(state string, color string) {
-	Map.ColorString[3] = 'f'
-}
-
-func main() {
-
-	fs := http.FileServer(http.Dir("example"))
-	http.Handle("/", fs)
-	http.HandleFunc("/color", getColors)
-
-	log.Println("Listening.....")
-	http.ListenAndServe(":3000", nil)
 }

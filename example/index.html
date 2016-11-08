@@ -15,11 +15,11 @@
 		}
 	</style>
 
-	<script src="../lib/raphael.js"></script>
+	<script src="lib/raphael.js"></script>
 	<!-- <script src="scale.raphael.js"></script> -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
 	<script src="color.jquery.js"></script>
-	<script src="../jquery.usmap.js"></script>
+	<script src="jquery.usmap.js"></script>
 
 	<script>
 		
@@ -40,11 +40,18 @@
 	    
 	    
 	    'click' : function(event, data) {
+				console.log(data);
+				$.get("/color")
+				.done(function(data){
+					console.log("HELLO");
+					console.log(data)
+				})
+				
 	      $('#alert')
 	        .text('Click '+data.name+' on map 1')
 	        .stop()
 	        .css('backgroundColor', '#ff0')
-	        .animate({backgroundColor: '#ddd'}, 1000);
+	        .animate({backgroundColor: '#ddd'}, 1000)
 	    }
 	  });
 	  
@@ -63,9 +70,17 @@
 	        .text('Click '+data.name+' on map 2')
 	        .stop()
 	        .css('backgroundColor', '#af0')
-	        .animate({backgroundColor: '#ddd'}, 1000);
-	    }
+	        .animate({backgroundColor: '#ddd'}, 1000)
+					.get("/color")
+					.done(function(data){
+						console.log(data);
+					})			
+					.fail(function(){
+						console.log("Womp");
+					})
+			}
 	  });
+
 	  
 	  $('#over-md').click(function(event){
 	    $('#map').usmap('trigger', 'MD', 'mouseover', event);
